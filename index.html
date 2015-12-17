@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+
+		html, body {
+			width: 100%;
+			height: 100%;
+			font-size: 14px;
+			font-family: monospace;
+		}
+
+		.main-block {
+			width: 100%;
+			height: 100%;
+			position: relative;
+		}
+
+		.value-wrap {
+			position: relative;
+			left: 50%;
+			top: 50%;
+		}
+
+		.value {
+			display: inline-block;
+			font-size: 20em;
+			color: green;
+			-webkit-transform: translateX(-50%) translateY(-50%);
+			-ms-transform: translateX(-50%) translateY(-50%);
+			-o-transform: translateX(-50%) translateY(-50%);
+			transform: translateX(-50%) translateY(-50%);
+		}
+
+		.debug {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+
+
+
+	</style>
+</head>
+<body>
+
+<div class="debug">
+	<div class="win-width">win-width: <span></span></div>
+	<div class="win-height">win-height: <span></span></div>
+	<div class="win-center">win-center: <span></span></div>
+
+	<div class="cursor-x-abs">cursor-x-abs: <span></span></div>
+	<div class="cursor-y-abs">cursor-y-abs: <span></span></div>
+
+	<div class="cursor-x-rel">cursor-x-rel: <span></span></div>
+	<div class="cursor-y-rel">cursor-y-rel: <span></span></div>
+</div>
+
+
+<div class="main-block">
+	<div class="value-wrap">
+		<div class="value">
+			00
+		</div>
+	</div>
+</div>
+	
+
+
+
+
+<script>
+
+
+(function() {
+
+
+
+	var winW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	var winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+	document.querySelectorAll(".win-width span")[0].innerText = winW;
+	document.querySelectorAll(".win-height span")[0].innerText = winH;
+
+	var centerW = winW/2;
+	var centerH = winH/2;
+
+	document.querySelectorAll(".win-center span")[0].innerText = '(' + centerW + '; ' + centerH + ')';
+
+
+	document.onmousemove = function(event){
+		var dot, eventDoc, doc, body, pageX, pageY;
+
+        event = event || window.event; // IE-ism
+
+        document.querySelectorAll(".cursor-x-abs span")[0].innerText = event.pageX;
+        document.querySelectorAll(".cursor-y-abs span")[0].innerText = event.pageY;
+
+        document.querySelectorAll(".cursor-x-rel span")[0].innerText = event.pageX - centerW;
+        document.querySelectorAll(".cursor-y-rel span")[0].innerText = centerH - event.pageY;
+
+	}
+   
+
+})();	
+
+
+</script>
+</body>
+
+
+</html>
