@@ -19,12 +19,25 @@
 			height: 100%;
 			position: relative;
 			overflow: hidden;
+			
+		}
+
+		.head {
+			position: absolute;
+			width: 50%;
+			height: 42%;
+			left: 25%;
+			top: 25%;
+			overflow: hidden;
+			background: url(fred_normal.png) no-repeat;
+			background-position-x: center;
 		}
 
 		.value-wrap {
 			position: relative;
 			left: 50%;
 			top: 50%;
+
 		}
 
 		.value {
@@ -63,9 +76,9 @@
 
 
 <div class="main-block">
+	<div class="head"></div>
 	<div class="value-wrap">
 		<div class="value">
-			00
 		</div>
 	</div>
 </div>
@@ -83,7 +96,7 @@
 
 	var winW = winH = centerW = centerH = relX = relY = 0;
 
-	var zeroVector = [1, 0];
+	var zeroVector = [2, 1];
 	var cursorVector = [0,0];
 
 
@@ -106,9 +119,7 @@
         relX = document.querySelectorAll(".cursor-x-rel span")[0].innerText = event.pageX - centerW;
         relY = document.querySelectorAll(".cursor-y-rel span")[0].innerText = centerH - event.pageY;
 
-        cursorVector = [relX,relY];
-
-        sectorFound(zeroVector, cursorVector, relY);
+        sectorFound(relX, relY);
 
 	}
 
@@ -128,9 +139,18 @@
 
 	}
 
-	function sectorFound(zero, point, side) {
+	function sectorFound(relX, relY) {
 
-		var side = (side >=0) ? 1 : -1;
+		var zero = zeroVector;
+		var point = [relX, relY];
+
+		var side = (relY >0) ? 1 : -1;
+
+		if (
+			relY <= 275 &&
+			relY >= -90 &&
+			relX <= 150 &&
+			relX >= -150 ) side = 0;
 
 		var scalMultVect = zero[0] * point[0] + zero[1] * point[1];
 
@@ -141,11 +161,31 @@
 
 		var alpha = Math.acos(cosAlpha);
 
-		var angle = side * alpha * (180/Math.PI);
+		var angle = alpha * (180/Math.PI);
+		
+		//console.log(angle);
 
-		var sector = Math.round(angle/30);
+		var preSector = Math.ceil(angle/30);
+		
+		console.log(preSector);
 
-		document.querySelectorAll(".main-block .value")[0].innerText = sector;
+		switch (side) {
+			case -1:
+				sector = preSector;
+				break;
+			
+			case 0: 
+				sector = 13;
+				break;
+
+			case 1:
+				sector = 13 - preSector;
+		} 
+
+		//document.querySelectorAll(".main-block .value")[0].innerText = sector;
+		document.querySelectorAll(".head")[0].style['background-position-y'] = -(sector-1) * 450 + 'px';
+
+
 
 
 	}
